@@ -15,6 +15,8 @@
 
 #include <QOffscreenSurface>
 #include <QOpenGLFunctions>
+#include <qcoreapplication.h>
+#include <qobject.h>
 
 #include "glscope.h"
 
@@ -215,7 +217,13 @@ void GlScope::mouseMoveEvent( QMouseEvent *event ) {
             }
         } else if ( selectedMarker < 2 ) {
             cursorInfo[ size_t( selectedCursor ) ]->pos[ selectedMarker ] = position;
-            emit markerMoved( selectedCursor, selectedMarker );
+
+            if ( cursorUpdateBuffer >= cursorUpdateBufferSize ) {
+                emit markerMoved( selectedCursor, selectedMarker );
+                cursorUpdateBuffer = 0;
+            } else {
+                ++cursorUpdateBuffer;
+            }
         }
     } else if ( event->buttons() & Qt::RightButton )
         rightMouseEvent( event );
@@ -232,6 +240,7 @@ void GlScope::mouseReleaseEvent( QMouseEvent *event ) {
             // qDebug() << "mouseReleaseEvent";
             cursorInfo[ size_t( selectedCursor ) ]->pos[ selectedMarker ] = position;
             emit markerMoved( selectedCursor, selectedMarker );
+			cursorUpdateBuffer = 0;
         }
         selectedMarker = NO_MARKER;
     }

@@ -67,6 +67,8 @@ ${QRC} ${RC} ${TRANSLATION_BIN_FILES} ${TRANSLATION_QRC} ${ICONS})
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::PrintSupport Qt5::OpenGL ${OPENGL_LIBRARIES} )
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_range_for)
 
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 if(MSVC)
     include(../cmake/fftw_on_windows.cmake)
     include(../cmake/libusb_on_windows.cmake)

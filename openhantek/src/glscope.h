@@ -110,6 +110,8 @@ class GlScope : public QOpenGLWidget {
 
     // Cursors
     std::vector< DsoSettingsScopeCursor * > cursorInfo;
+	int cursorUpdateBuffer = 0;
+	int cursorUpdateBufferSize = 8;
     int selectedCursor = 0;
     bool rightMouseInside = false;
 
